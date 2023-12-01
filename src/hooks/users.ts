@@ -41,8 +41,8 @@ export const useCreateUser = (
     ...mutationOptions,
     onSuccess: (data, user, params) => {
       queryClient.setQueryData<User[]>(userKeys.all, (old) => {
-        if (!old) return [{ ...data, id: new Date().getTime() }];
-        return [...old, { ...data, id: new Date().getTime() }];
+        if (!old) return [{ ...user, id: 1 }];
+        return [...old, { ...user, id: old.length + 1 }];
       });
       mutationOptions?.onSuccess?.(data, user, params);
     },

@@ -17,10 +17,10 @@ export const apiRequest = async <T, K = unknown>(
       url: (internal ? "/api" : API_BASE_URL) + url,
     });
     return response.data as T;
-  } catch (e) {
+  } catch (e: any) {
     if (axios.isAxiosError(e)) {
-      throw e;
+      throw e.response?.data;
     }
-    return Promise.reject();
+    return Promise.reject(e);
   }
 };

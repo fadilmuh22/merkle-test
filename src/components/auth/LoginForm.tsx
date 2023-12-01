@@ -7,14 +7,24 @@ import { Grid, Paper, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import Button from "../common/Button";
+import { useSnackbar } from "../providers/SnackbarProvider";
 
 export default function LoginForm() {
   const router = useRouter();
+
+  const { showSnackbar } = useSnackbar();
   const { control, handleSubmit } = useForm<LoginPayload>({
     mode: "onChange",
   });
 
-  const { mutateAsync, isLoading } = useLogin();
+  const { mutateAsync, isLoading } = useLogin({
+    onSuccess: () => {
+      showSnackbar("Login successfully");
+    },
+    onError: (error: any) => {
+      showSnackbar(error as string);
+    },
+  });
 
   const onSubmit = async (data: LoginPayload) => {
     return mutateAsync(data).then(() => {
